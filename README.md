@@ -36,12 +36,15 @@ sudo apt upgrade -y
 sudo apt install build-essential -y
 ```
 
-```bash
+
 # Node.js and npm Installation
+```bash
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
+```
 
 # pnpm Installation
+```bash
 npm install -g pnpm
 ```
 
@@ -49,7 +52,9 @@ npm install -g pnpm
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
+```
 
+```bash
 rustup target add wasm32-unknown-unknown
 ```
 ## Step 2: Initialize Rust Project
@@ -62,7 +67,10 @@ cd greeting
 
 ### Configure Rust Project
 
-Enter the file with the `nano Cargo.toml` command and edit it as in the code below. 
+```bash
+nano Cargo.toml
+```
+Edit file `Cargo.toml` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -93,7 +101,11 @@ std = [
 ```
 
 ### Write Rust Smart Contract
-Firstly, remove the codes of the Rust Smart Contract with the `rm src/lib.rs` command. Then enter the file with the `nano src/lib.rs` command and edit it as in the code below. 
+
+```bash
+rm src/lib.rs && nano src/lib.rs
+```
+Edit file `lib.rs` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -132,7 +144,12 @@ basic_entrypoint!(ROUTER);
 ```
 
 ### Create a Makefile
-Enter the file with the `nano Makefile` command and edit it as in the code below. 
+
+```bash
+nano Makefile
+```
+
+Edit file `Makefile` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
