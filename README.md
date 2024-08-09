@@ -51,6 +51,8 @@ npm install -g pnpm
 ### Rust and Cargo Installation
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+```bash
 source $HOME/.cargo/env
 ```
 
