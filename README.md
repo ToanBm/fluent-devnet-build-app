@@ -9,6 +9,8 @@ The first blended execution network. Fluent blends Wasm, EVM and SVM apps into a
 * [Discord](https://discord.gg/fluentlabs)
 * [Docs](https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent)
 
+- Open [Github Codespace](https://github.com/codespaces)
+- Paste the below command to Build a Blended App
 ## Step 1: System Updates and Installation of Required Tools
 
 ### Update System Packages
