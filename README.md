@@ -150,7 +150,6 @@ basic_entrypoint!(ROUTER);
 ```bash
 nano Makefile
 ```
-
 Edit file `Makefile` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
@@ -197,12 +196,15 @@ make
 
 ### Create Project Directory
 ```bash
-cd
+cd ../
 mkdir typescript-wasm-project
-
+```
+```bash
 mkdir -p ~/typescript-wasm-project/greeting/bin
-cp ~/greeting/target/wasm32-unknown-unknown/release/greeting.wasm ~/typescript-wasm-project/greeting/bin/
-
+```
+```bash
+cp /workspaces/codespaces-blank/greeting/target/wasm32-unknown-unknown/release/greeting.wasm /workspaces/codespaces-blank/typescript-wasm-project/greeting/bin/
+```
 cd typescript-wasm-project
 npm init -y
 ```
@@ -220,7 +222,11 @@ After `npx hardhat` command, it will ask us for some information, enter it as in
 ## Configure TypeScript and Hardhat
 
 ### Update Hardhat Configuration
-remove the codes of the Hardhat with the `rm hardhat.config.ts` command. Then enter the file with the `nano hardhat.config.ts` command and edit it as in the code below. 
+
+```bash
+rm hardhat.config.ts && nano hardhat.config.ts
+```
+Edit file `hardhat.config.ts` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -275,7 +281,11 @@ export default config;
 ```
 
 ### Update Package
-Remove the codes of the package.json with the `rm package.json` command. Then enter the file with the `nano package.json` command and edit it as in the code below. 
+
+```bash
+rm package.json && nano package.json
+```
+Edit file `hardhat.config.ts` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -326,9 +336,11 @@ DEPLOYER_PRIVATE_KEY=your-private-key-here
 
 
 ## Write Solidity Contracts
-
 ### Define the Interface
-Enter the file with the `nano contracts/IFluentGreeting.sol` command and edit it as in the code below. 
+```bash
+nano contracts/IFluentGreeting.sol
+```
+Edit file `IFluentGreeting.sol` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -341,7 +353,10 @@ interface IFluentGreeting {
 ```
 
 ### Implement Greeting Contract
-Enter the file with the `nano contracts/GreetingWithWorld.sol` command and edit it as in the code below. 
+```bash
+nano contracts/GreetingWithWorld.sol
+```
+Edit file `GreetingWithWorld.sol` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -365,12 +380,13 @@ contract GreetingWithWorld {
 ```
 
 ## Step 4: Deploy Both Contracts Using Hardhat
-
 ### Create the Deployment Script
-
 This deployment script is responsible for deploying both the Rust smart contract (compiled to Wasm) and the Solidity smart contract.
 
-Firstly, create a `deploy` folder with `mkdir deploy` command, then enter the file with the `nano deploy/01_deploy_contracts.ts` command and edit it as in the code below. 
+```bash
+mkdir deploy && nano deploy/01_deploy_contracts.ts
+```
+Edit file `01_deploy_contracts.ts` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -467,7 +483,10 @@ func.tags = ["all"];
 ```
 
 ### Create Hardhat Task
-Firstly, create a `tasks` folder with `mkdir tasks` command, then enter the file with the `nano tasks/get-greeting.ts` command and edit it as in the code below. 
+```bash
+mkdir tasks && nano tasks/get-greeting.ts
+```
+Edit file `get-greeting.ts` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
 
 ```bash
@@ -484,16 +503,17 @@ task("get-greeting", "Fetches the greeting from the deployed GreetingWithWorld c
 ```
 
 ## Step 5: Compile and Deploy the Contracts
-After deploying the contract with the `pnpm hardhat deploy` command, we will enter the tx output we get as in the photo in the 0x.... section in the `pnpm hardhat get-greeting --contract 0x.....` code. 
-
-![deploy](https://github.com/kocality/fluent-devnet/assets/69348404/65c39233-29cf-4110-afa1-13c1edbca9e7)
-
-
 ```bash
 pnpm hardhat compile
-
+```
+```bash
 pnpm hardhat deploy
+``` 
+If successful, you will see the result: GreetingWithWorld contract deployed at: 0x.....
+Use the value 0x... for the command below.
+![deploy](https://github.com/kocality/fluent-devnet/assets/69348404/65c39233-29cf-4110-afa1-13c1edbca9e7)
 
+```bash
 pnpm hardhat get-greeting --contract 0x.....
 ```
 
