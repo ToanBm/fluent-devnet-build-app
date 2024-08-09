@@ -503,6 +503,7 @@ If you get the output you see below, it means it is done. You can search for tx 
 
 ![son](https://github.com/kocality/fluent-devnet/assets/69348404/a83133f6-3ef3-44a8-8a88-d49beef76f1f)
 
- #### Thank you!
+ ## Thank you! 
+ ### This article references Kocality's instructions.
 
 
