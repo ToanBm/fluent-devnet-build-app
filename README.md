@@ -189,7 +189,10 @@ mkdir -p ~/typescript-wasm-project/greeting/bin
 ```bash
 cp /workspaces/codespaces-blank/greeting/target/wasm32-unknown-unknown/release/greeting.wasm /workspaces/codespaces-blank/typescript-wasm-project/greeting/bin/
 ```
+```bash
 cd typescript-wasm-project
+```
+```bash
 npm init -y
 ```
 ### Install Dependencies
