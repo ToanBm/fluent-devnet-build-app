@@ -181,10 +181,9 @@ make
 ### Create Project Directory
 ```bash
 cd ../
-mkdir typescript-wasm-project
-```
-```bash
-mkdir -p ~/typescript-wasm-project/greeting/bin
+mkdir typescript-wasm-project && cd typescript-wasm-project
+mkdir greeting && cd greeting
+mkdir bin && cd ../../
 ```
 ```bash
 cp /workspaces/codespaces-blank/greeting/target/wasm32-unknown-unknown/release/greeting.wasm /workspaces/codespaces-blank/typescript-wasm-project/greeting/bin/
