@@ -54,7 +54,7 @@ cd greeting
 ### Configure Rust Project
 
 ```bash
-nano Cargo.toml
+rm Cargo.toml && nano Cargo.toml
 ```
 Edit file `Cargo.toml` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
