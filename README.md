@@ -16,7 +16,11 @@ The first blended execution network. Fluent blends Wasm, EVM and SVM apps into a
 ### Update System Packages
 ```bash
 sudo apt update
+```
+```bash
 sudo apt upgrade -y
+```
+```bash
 sudo apt install build-essential -y
 ```
 
