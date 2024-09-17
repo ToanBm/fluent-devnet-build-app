@@ -131,6 +131,7 @@ prepare_output_dir:
 	$(MKDIR) $(WASM_OUTPUT_DIR)
 
 .PHONY: all build prepare_output_dir
+EOF
 
 print_command "Building Wasm Project..."
 make
