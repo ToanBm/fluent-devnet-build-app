@@ -97,3 +97,125 @@ impl ROUTER {
 basic_entrypoint!(ROUTER);
 EOF
 
+print_command "Creating a Makefile..."
+cat <<EOF > Makefile
+.DEFAULT_GOAL := all
+
+# Compilation flags
+RUSTFLAGS := '-C link-arg=-zstack-size=131072 -C target-feature=+bulk-memory -C opt-level=z -C strip=symbols'
+
+# Paths to the target WASM file and output directory
+WASM_TARGET := ./target/wasm32-unknown-unknown/release/greeting.wasm
+WASM_OUTPUT_DIR := bin
+WASM_OUTPUT_FILE := $(WASM_OUTPUT_DIR)/greeting.wasm
+
+# Commands
+CARGO_BUILD := cargo build --release --target=wasm32-unknown-unknown --no-default-features
+RM := rm -rf
+MKDIR := mkdir -p
+CP := cp
+
+# Targets
+all: build
+
+build: prepare_output_dir
+	@echo "Building the project..."
+	RUSTFLAGS=$(RUSTFLAGS) $(CARGO_BUILD)
+
+	@echo "Copying the wasm file to the output directory..."
+	$(CP) $(WASM_TARGET) $(WASM_OUTPUT_FILE)
+
+prepare_output_dir:
+	@echo "Preparing the output directory..."
+	$(RM) $(WASM_OUTPUT_DIR)
+	$(MKDIR) $(WASM_OUTPUT_DIR)
+
+.PHONY: all build prepare_output_dir
+
+print_command "Building Wasm Project..."
+make
+
+print_command "Creating Project Directory..."
+cd ../
+mkdir typescript-wasm-project && cd typescript-wasm-project
+mkdir greeting && cd greeting
+mkdir bin && cd ../../
+
+cp /workspaces/codespaces-blank/greeting/target/wasm32-unknown-unknown/release/greeting.wasm /workspaces/codespaces-blank/typescript-wasm-project/greeting/bin/
+npm init -y
+
+print_command "Installing Dependencies..."
+npm install --save-dev typescript ts-node hardhat hardhat-deploy ethers dotenv @nomicfoundation/hardhat-toolbox @typechain/ethers-v6 @typechain/hardhat @types/node
+pnpm add ethers@^5.7.2 @nomiclabs/hardhat-ethers@2.0.6
+pnpm install
+npx hardhat
+
+print_command "Updating Hardhat Configuration..."
+cat <<EOF > hardhat.config.ts
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-deploy";
+import * as dotenv from "dotenv";
+import "./tasks/get-greeting"; 
+import "@nomiclabs/hardhat-ethers"; 
+
+dotenv.config();
+
+const config: HardhatUserConfig = {
+  defaultNetwork: "dev",
+  networks: {
+    dev: {
+      url: process.env.RPC_URL || "https://rpc.dev.thefluent.xyz/",
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY || "your-private-key"],
+      chainId: 20993,
+    },
+  },
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
+        version: "0.8.24",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+    ],
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+  },
+};
+
+export default config;
+EOF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
