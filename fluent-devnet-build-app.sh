@@ -151,7 +151,9 @@ pnpm add ethers@^5.7.2 @nomiclabs/hardhat-ethers@2.0.6
 pnpm install
 
 echo "Creating a Hardhat project..."
-npx hardhat
+npx hardhat init --javascript --yes
+npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle @nomiclabs/hardhat-etherscan chai
+echo "Hardhat project setup complete!"
 
 print_command "Updating Hardhat Configuration..."
 cat <<EOF > hardhat.config.ts
