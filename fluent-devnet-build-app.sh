@@ -149,6 +149,8 @@ print_command "Installing Dependencies..."
 npm install --save-dev typescript ts-node hardhat hardhat-deploy ethers dotenv @nomicfoundation/hardhat-toolbox @typechain/ethers-v6 @typechain/hardhat @types/node
 pnpm add ethers@^5.7.2 @nomiclabs/hardhat-ethers@2.0.6
 pnpm install
+
+echo "Creating a Hardhat project..."
 npx hardhat
 
 print_command "Updating Hardhat Configuration..."
