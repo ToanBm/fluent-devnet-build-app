@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Step 1: Install Hardhat and resolve dependency issues
-echo "Installing Hardhat and resolving dependency conflicts..."
-npm install --save-dev hardhat @nomiclabs/hardhat-ethers ethers --legacy-peer-deps
+sudo apt-get update && sudo apt get upgrade -y
+clear
 
-# Step 2: Create a new Hardhat project with default settings
-echo "Creating a new Hardhat project..."
-npx hardhat init --javascript --yes
+echo "Installing dependencies..."
+npm install --save-dev hardhat
+npm install dotenv
+npm install @swisstronik/utils
+npm install @openzeppelin/hardhat-upgrades
+npm install @openzeppelin/contracts
+npm install @nomicfoundation/hardhat-toolbox
+echo "Installation completed."
 
-echo "Hardhat project setup complete!"
+echo "Creating a Hardhat project..."
+npx hardhat
 
+rm -f contracts/Lock.sol
