@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# Step 1: Install Hardhat
-echo "Installing Hardhat..."
-npm install --save-dev hardhat
+# Step 1: Install Hardhat and resolve dependency issues
+echo "Installing Hardhat and resolving dependency conflicts..."
+npm install --save-dev hardhat @nomiclabs/hardhat-ethers ethers --legacy-peer-deps
 
-# Step 2: Create a new Hardhat project
+# Step 2: Create a new Hardhat project with default settings
 echo "Creating a new Hardhat project..."
 npx hardhat init --javascript --yes
 
-# Optional: Install dependencies commonly used with Hardhat
-echo "Installing common Hardhat plugins and dependencies..."
-npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle @nomiclabs/hardhat-etherscan chai
-
 echo "Hardhat project setup complete!"
+
