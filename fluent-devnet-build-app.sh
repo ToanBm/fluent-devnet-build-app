@@ -13,7 +13,7 @@ echo -e "\e[0m"
 print_command() {
   echo -e "${BOLD}${YELLOW}$1${RESET}"
 }
-
+# Step 1: System Updates and Installation of Required Tools
 print_command "Updating System Packages..."
 sudo apt update
 sudo apt upgrade -y
@@ -29,12 +29,13 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 . "$HOME/.cargo/env"
 rustup target add wasm32-unknown-unknown
 
+# Step 2: Initialize Rust Project
 print_command "Installing Rust Project..."
 cargo new --lib greeting
 cd greeting
 
 print_command "Configure Rust Project..."
-cat <<EOF > Cargo.toml
+cat <<'EOL' > Cargo.toml
 [package]
 edition = "2021"
 name = "greeting"
@@ -59,10 +60,10 @@ default = []
 std = [
   "fluentbase-sdk/std",
 ]
-EOF
+EOL
 
 print_command "Writing Rust Smart Contract..."
-cat <<EOF > src/lib.rs
+cat <<'EOL' > src/lib.rs
 #![cfg_attr(target_arch = "wasm32", no_std)]
 extern crate alloc;
 extern crate fluentbase_sdk;
@@ -95,10 +96,10 @@ impl ROUTER {
     }
 }
 basic_entrypoint!(ROUTER);
-EOF
+EOL
 
 print_command "Creating a Makefile..."
-cat <<EOF > Makefile
+cat <<'EOL' > Makefile
 .DEFAULT_GOAL := all
 
 # Compilation flags
@@ -131,11 +132,12 @@ prepare_output_dir:
 	$(MKDIR) $(WASM_OUTPUT_DIR)
 
 .PHONY: all build prepare_output_dir
-EOF
+EOL
 
 print_command "Building Wasm Project..."
 make
 
+# Step 3: Initialize Solidity Project
 print_command "Creating Project Directory..."
 cd ../
 mkdir typescript-wasm-project && cd typescript-wasm-project
@@ -150,13 +152,8 @@ npm install --save-dev typescript ts-node hardhat hardhat-deploy ethers dotenv @
 pnpm add ethers@^5.7.2 @nomiclabs/hardhat-ethers@2.0.6
 pnpm install
 
-echo "Creating a Hardhat project..."
-npx hardhat init --javascript --yes
-npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle @nomiclabs/hardhat-etherscan chai
-echo "Hardhat project setup complete!"
-
 print_command "Updating Hardhat Configuration..."
-cat <<EOF > hardhat.config.ts
+cat <<'EOL' > hardhat.config.ts
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
@@ -205,7 +202,7 @@ const config: HardhatUserConfig = {
 };
 
 export default config;
-EOF
+EOL
 
 
 
