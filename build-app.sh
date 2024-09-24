@@ -1,14 +1,11 @@
 #!/bin/bash
-
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 YELLOW=$(tput setaf 3)
-# Logo
 
-echo     "*********************************************"
-echo     "Githuh: https://github.com/ToanBm"
-echo     "X: https://x.com/buiminhtoan1985"
-echo -e "\e[0m"
+# Logo
+curl -s https://raw.githubusercontent.com/ToanBm/user-info/main/logo.sh | bash
+sleep 3
 
 print_command() {
   echo -e "${BOLD}${YELLOW}$1${RESET}"
