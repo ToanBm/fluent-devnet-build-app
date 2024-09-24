@@ -205,6 +205,191 @@ const config: HardhatUserConfig = {
 export default config;
 EOL
 
+print_command "Updating Package..."
+rm package.json
+
+cat <<'EOL' > package.json
+{
+  "name": "blendedapp",
+  "version": "1.0.0",
+  "description": "Blended Hello, World",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat deploy"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/node": "^20.12.12",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.4",
+    "hardhat-deploy": "^0.12.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "ethers": "^6.12.2",
+    "fs": "^0.0.1-security"
+  }
+}
+EOL
+
+# Create Environment Variables
+echo "Create .env file..."
+
+read -p "Enter your EVM wallet private key (without 0x): " DEPLOYER_PRIVATE_KEY
+cat <<EOF > .env
+DEPLOYER_PRIVATE_KEY=$DEPLOYER_PRIVATE_KEY
+EOF
+
+# Write Solidity Contracts
+
+
+cat <<'EOL' > contracts/GreetingWithWorld.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "./IFluentGreeting.sol";
+
+contract GreetingWithWorld {
+    IFluentGreeting public fluentGreetingContract;
+
+    constructor(address _fluentGreetingContractAddress) {
+        fluentGreetingContract = IFluentGreeting(_fluentGreetingContractAddress);
+    }
+
+    function getGreeting() external view returns (string memory) {
+        string memory greeting = fluentGreetingContract.greeting();
+        return string(abi.encodePacked(greeting, ", World"));
+    }
+}
+EOL
+
+# Step 4: Deploy Both Contracts Using Hardhat
+# Create the Deployment Script
+
+mkdir deploy
+cat <<'EOL' > deploy/01_deploy_contracts.ts
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { DeployFunction } from "hardhat-deploy/types";
+import { ethers } from "hardhat";
+import fs from "fs";
+import crypto from "crypto";
+import path from "path";
+require("dotenv").config();
+
+const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || "your-private-key";
+
+const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments, getNamedAccounts, network } = hre;
+  const { deploy, save, getOrNull } = deployments;
+  const { deployer: deployerAddress } = await getNamedAccounts();
+
+  console.log("deployerAddress", deployerAddress);
+
+  // Deploying WASM Contract
+  console.log("Deploying WASM contract...");
+  const wasmBinaryPath = "./greeting/bin/greeting.wasm";
+  const provider = new ethers.providers.JsonRpcProvider(network.config.url);
+  const deployer = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, provider);
+
+  const fluentGreetingContractAddress = await deployWasmContract(wasmBinaryPath, deployer, provider, getOrNull, save);
+
+  // Deploying Solidity Contract
+  console.log("Deploying GreetingWithWorld contract...");
+  const greetingWithWorld = await deploy("GreetingWithWorld", {
+    from: deployerAddress,
+    args: [fluentGreetingContractAddress],
+    log: true,
+  });
+
+  console.log(`GreetingWithWorld contract deployed at: ${greetingWithWorld.address}`);
+};
+
+async function deployWasmContract(
+  wasmBinaryPath: string,
+  deployer: ethers.Wallet,
+  provider: ethers.providers.JsonRpcProvider,
+  getOrNull: any,
+  save: any
+) {
+  const wasmBinary = fs.readFileSync(wasmBinaryPath);
+  const wasmBinaryHash = crypto.createHash("sha256").update(wasmBinary).digest("hex");
+  const artifactName = path.basename(wasmBinaryPath, ".wasm");
+  const existingDeployment = await getOrNull(artifactName);
+
+  if (existingDeployment && existingDeployment.metadata === wasmBinaryHash) {
+    console.log("WASM contract bytecode has not changed. Skipping deployment.");
+    console.log(`Existing contract address: ${existingDeployment.address}`);
+    return existingDeployment.address;
+  }
+
+  const gasPrice = (await provider.getFeeData()).gasPrice;
+
+  const transaction = {
+    data: "0x" + wasmBinary.toString("hex"),
+    gasLimit: 3000000,
+    gasPrice: gasPrice,
+  };
+
+  const tx = await deployer.sendTransaction(transaction);
+  const receipt = await tx.wait();
+
+  if (receipt && receipt.contractAddress) {
+    console.log(`WASM contract deployed at: ${receipt.contractAddress}`);
+
+    const artifact = {
+      abi: [],
+      bytecode: "0x" + wasmBinary.toString("hex"),
+      deployedBytecode: "0x" + wasmBinary.toString("hex"),
+      metadata: wasmBinaryHash,
+    };
+
+    const deploymentData = {
+      address: receipt.contractAddress,
+      ...artifact,
+    };
+
+    await save(artifactName, deploymentData);
+  } else {
+    throw new Error("Failed to deploy WASM contract");
+  }
+
+  return receipt.contractAddress;
+}
+
+export default func;
+func.tags = ["all"];
+EOL
+
+# Create Hardhat Task
+mkdir tasks
+cat <<'EOL' > tasks/get-greeting.ts
+import { task } from "hardhat/config";
+import { ethers } from "hardhat";
+
+task("get-greeting", "Fetches the greeting from the deployed GreetingWithWorld contract")
+  .addParam("contract", "The address of the deployed GreetingWithWorld contract")
+  .setAction(async ({ contract }, hre) => {
+    const GreetingWithWorld = await hre.ethers.getContractAt("GreetingWithWorld", contract);
+    const greeting = await GreetingWithWorld.getGreeting();
+    console.log("Greeting:", greeting);
+  });
+  EOL
+
+  # Step 5: Compile and Deploy the Contracts
+  pnpm hardhat compile
+  
+  pnpm hardhat deploy
+
+
+
+
 
 
 
