@@ -248,8 +248,18 @@ DEPLOYER_PRIVATE_KEY=$DEPLOYER_PRIVATE_KEY
 EOF
 
 # Write Solidity Contracts
+# Define the Interface
 
+cat <<'EOL' > contracts/IFluentGreeting.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
+interface IFluentGreeting {
+    function greeting() external view returns (string memory);
+}
+EOL
+
+# Implement Greeting Contract
 cat <<'EOL' > contracts/GreetingWithWorld.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -380,12 +390,12 @@ task("get-greeting", "Fetches the greeting from the deployed GreetingWithWorld c
     const greeting = await GreetingWithWorld.getGreeting();
     console.log("Greeting:", greeting);
   });
-  EOL
+EOL
 
-  # Step 5: Compile and Deploy the Contracts
-  pnpm hardhat compile
+# Step 5: Compile and Deploy the Contracts
+pnpm hardhat compile
   
-  pnpm hardhat deploy
+pnpm hardhat deploy
 
 
 
