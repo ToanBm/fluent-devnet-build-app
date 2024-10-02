@@ -21,6 +21,8 @@ git clone https://github.com/ToanBm/fluent-devnet-build-app.git && cd fluent-dev
 ```bash
 chmod +x build-app.sh && ./build-app.sh
 ```
+### Ps: Choose "Creat a TypeScrip Project" and enter 3 times.
+![Picture]
 ## ---------------------------------Done!-----------------------------------------------
 ## Manual Setup
 ## Step 1: System Updates and Installation of Required Tools
