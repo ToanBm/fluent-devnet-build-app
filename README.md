@@ -15,7 +15,7 @@ The first blended execution network. Fluent blends Wasm, EVM and SVM apps into a
 ## Automatic Setup
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/ToanBm/fluent-devnet-build-app.git
+git clone https://github.com/ToanBm/fluent-devnet-build-app.git && cd fluent-devnet-build-app
 ```
 ### 2. Run the setup script
 ```bash
