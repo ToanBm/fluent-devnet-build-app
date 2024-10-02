@@ -11,8 +11,19 @@ The first blended execution network. Fluent blends Wasm, EVM and SVM apps into a
 ## Start...
 - Open [Github Codespace](https://github.com/codespaces)
 - Paste the below command to Build a Blended App
-## Step 1: System Updates and Installation of Required Tools
 
+## Automatic Setup
+### 1. Clone the repository
+```bash
+git clone https://github.com/ToanBm/fluent-devnet-build-app.git
+```
+### 2. Run the setup script
+```bash
+chmod +x build-app.sh && ./build-app.sh
+```
+## ---------------------------------Done!-----------------------------------------------
+## Manual Setup
+## Step 1: System Updates and Installation of Required Tools
 ### Update System Packages
 ```bash
 sudo apt update
@@ -23,19 +34,15 @@ sudo apt upgrade -y
 ```bash
 sudo apt install build-essential -y
 ```
-
-
 # Node.js and npm Installation
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
-
 # pnpm Installation
 ```bash
 npm install -g pnpm
 ```
-
 ### Rust and Cargo Installation
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -43,7 +50,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```bash
 source $HOME/.cargo/env
 ```
-
 ```bash
 rustup target add wasm32-unknown-unknown
 ```
@@ -54,15 +60,12 @@ rustup target add wasm32-unknown-unknown
 cargo new --lib greeting
 cd greeting
 ```
-
 ### Configure Rust Project
-
 ```bash
 rm Cargo.toml && nano Cargo.toml
 ```
 Edit file `Cargo.toml` as in the code below. 
 (Ctrl + X, Y and Enter will do to save)
-
 ```bash
 [package]
 edition = "2021"
