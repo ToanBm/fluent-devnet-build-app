@@ -40,10 +40,10 @@ version = "0.1.0"
 
 [dependencies]
 alloy-sol-types = {version = "0.7.4", default-features = false}
-fluentbase-sdk = {git = "https://github.com/fluentlabs-xyz/fluentbase", default-features = false , branch = "dev2"}
+fluentbase-sdk = {git = "https://github.com/fluentlabs-xyz/fluentbase", default-features = false}
 
 [lib]
-crate-type = ["cdylib", "staticlib"] # For accessing the C lib
+crate-type = ["cdylib", "staticlib"] #For accessing the C lib
 path = "src/lib.rs"
 
 [profile.release]
