@@ -24,6 +24,10 @@ npm install -g pnpm
 print_command "Installing Rust and Cargo..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 . "$HOME/.cargo/env"
+
+rustup install nightly
+rustup override set nightly
+rustc --version
 rustup target add wasm32-unknown-unknown
 
 # Step 2: Initialize Rust Project
@@ -152,54 +156,33 @@ npx hardhat
 
 print_command "Updating Hardhat Configuration..."
 cat <<'EOL' > hardhat.config.ts
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import { HardhatUserConfig } from "hardhat/types";
 import "hardhat-deploy";
-import * as dotenv from "dotenv";
-import "./tasks/get-greeting"; 
-import "@nomiclabs/hardhat-ethers"; 
+import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-ethers";
+import "./tasks/greeting"
 
-dotenv.config();
+require("dotenv").config();
+
+const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || "";
 
 const config: HardhatUserConfig = {
   defaultNetwork: "dev",
   networks: {
     dev: {
-      url: process.env.RPC_URL || "https://rpc.dev.thefluent.xyz/",
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY || "your-private-key"],
-      chainId: 20993,
+      url: "https://rpc.dev.gblend.xyz/",
+      accounts: [DEPLOYER_PRIVATE_KEY],
+      chainId : 20993,
     },
   },
   solidity: {
-    compilers: [
-    {
-        version: "0.8.27",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
+    version: "0.8.27",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
       },
-      {
-        version: "0.8.20",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: "0.8.24",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-    ],
+    },
   },
   namedAccounts: {
     deployer: {
@@ -208,7 +191,7 @@ const config: HardhatUserConfig = {
   },
 };
 
-export default config;
+export default config;  
 EOL
 
 print_command "Updating Package..."
@@ -223,7 +206,8 @@ cat <<'EOL' > package.json
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat deploy"
-  },
+  }
+  ,
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
