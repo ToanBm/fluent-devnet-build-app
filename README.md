@@ -53,6 +53,11 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
 ```bash
+rustup install nightly
+rustup override set nightly
+rustc --version
+```
+```bash
 rustup target add wasm32-unknown-unknown
 ```
 ## Step 2: Initialize Rust Project
@@ -229,8 +234,8 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 import * as dotenv from "dotenv";
-import "./tasks/get-greeting"; 
-import "@nomiclabs/hardhat-ethers"; 
+import "./tasks/get-greeting";
+import "@nomiclabs/hardhat-ethers";
 
 dotenv.config();
 
@@ -256,6 +261,15 @@ const config: HardhatUserConfig = {
       },
       {
         version: "0.8.24",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
+        version: "0.8.27", // Added compatibility for 0.8.27
         settings: {
           optimizer: {
             enabled: true,
