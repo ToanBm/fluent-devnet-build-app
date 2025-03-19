@@ -1,15 +1,13 @@
 # Guide to Build a Blended App on Fluent Devnet
-
 <img src="https://images.mirror-media.xyz/publication-images/_89lCC1I0m5JlMwv14wo3.png?height=360&width=720" width="700"/>
-
-## About Fluent
-The first blended execution network. Fluent blends Wasm, EVM and SVM apps into a unified execution environment.
-* [Twitter](https://x.com/fluentxyz)
-* [Website](https://fluent.xyz/)
-* [Discord](https://discord.gg/fluentlabs)
-* [Docs](https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent)
 ## Start...
+
+- Faucet [Here](https://faucet.dev.gblend.xyz/)
+
+- Explorer [Here](https://blockscout.dev.gblend.xyz/)
+
 - Open [Github Codespace](https://github.com/codespaces)
+
 - Paste the below command to Build a Blended App
 
 ## Automatic Setup
@@ -21,6 +19,8 @@ git clone https://github.com/ToanBm/fluent-devnet-build-app.git && cd fluent-dev
 ```bash
 chmod +x app.sh && ./app.sh
 ```
+
+
 ### Ps: Choose "Creat a TypeScrip Project" and enter 3 times.
 ![Picture](https://github.com/ToanBm/fluent-devnet-build-app/blob/main/hardhat.jpg)
 ## ---------------------------------Done!-----------------------------------------------
