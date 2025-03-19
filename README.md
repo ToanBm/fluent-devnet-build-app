@@ -19,7 +19,7 @@ git clone https://github.com/ToanBm/fluent-devnet-build-app.git && cd fluent-dev
 ```
 ### 2. Run the setup script
 ```bash
-chmod +x build-app.sh && ./build-app.sh
+chmod +x app.sh && ./app.sh
 ```
 ### Ps: Choose "Creat a TypeScrip Project" and enter 3 times.
 ![Picture](https://github.com/ToanBm/fluent-devnet-build-app/blob/main/hardhat.jpg)
